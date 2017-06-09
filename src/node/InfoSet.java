@@ -9,11 +9,11 @@ public class InfoSet extends BettingNode{
 	public BettingNode child;
 
 	public InfoSet(long solnIdx, int num_choices, int player, int round, BettingNode child) {
-		this.solnIdx = solnIdx
-		this.num_choices = num_choices
-		this.player = player
-		this.round = round
-		this.child = child
+		this.solnIdx = solnIdx;
+		this.num_choices = num_choices;
+		this.player = player;
+		this.round = round;
+		this.child = child;
 	}
 	
 	@Override
