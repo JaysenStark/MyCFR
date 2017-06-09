@@ -19,7 +19,7 @@ public class NullActionAbstraction extends ActionAbstraction implements Abstract
 			if ( type == ActionType.a_raise ) {
 				int [] sizes = new int[2];
 				if ( game.raiseIsValid(sizes) ) {
-					if ( numActions + sizes[1] - sizes[0] - 1 > MAX_ABSTRACT_ACTIONS ) {
+					if ( numActions + sizes[1] - sizes[0] + 1 > MAX_ABSTRACT_ACTIONS ) {
 						error = true;
 						break;
 					}

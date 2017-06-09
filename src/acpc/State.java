@@ -6,7 +6,7 @@ public class State {
 	public int maxSpent;
 	public int [] spent;
 	public int minNoLimitRaiseTo;
-	public int [] playerFolded;
+	public boolean [] playerFolded;
 	public int [] numActions;
 	public int round;
 	public boolean finished;
@@ -21,7 +21,7 @@ public class State {
 		
 		spent = new int[game.numPlayers];
 		/* playerFolded all 0 */
-		playerFolded = new int[game.numPlayers];
+		playerFolded = new boolean[game.numPlayers];
 		
 		for ( int p = 0; p < game.numPlayers; ++p ) {
 			spent[p] = game.blind[p];

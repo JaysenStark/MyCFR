@@ -24,8 +24,8 @@ public abstract class BettingNode {
 	
 	public boolean didPlayerFold(int position) { return false; }
 	
-	public void setSibling(BettingNode sibing) {
-		this.sibling = sibing;
+	public void setSibling(BettingNode sibling) {
+		this.sibling = sibling;
 	}
 	
 	public BettingNode getSibling() { return sibling; }

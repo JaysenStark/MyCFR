@@ -3,7 +3,7 @@ package node;
 import acpc.Game;
 
 public class TerminalNode extends BettingNode {
-	public TerminalNode(Game game) {
+	public TerminalNode(int showdown, int [] foldValue, int money) {
 		
 	}
 	

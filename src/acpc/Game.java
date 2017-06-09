@@ -74,7 +74,8 @@ public class Game {
 			return false;
 		}
 		if ( bettingType != "no-limit" ) {
-			/* limit betting, no need to worry about sizes */
+			/* limit betting, no need to 
+			 * worry about sizes */
 			sizes[0] = 0;
 			sizes[1] = 0;
 			return true;
@@ -94,7 +95,7 @@ public class Game {
 		int n = curPlayer;
 		do {
 			n = ( n + 1 ) % numPlayers;
-		} while ( state.playerFolded[n] != 1 || state.spent[n] >= stack[n] );
+		} while ( state.playerFolded[n] || state.spent[n] >= stack[n] );
 		return n;
 	}
 	
@@ -112,7 +113,7 @@ public class Game {
 	public int numFolded() {
 		int ret = 0;
 		for ( int p = 0; p < numPlayers; ++p ) {
-			if ( state.playerFolded[p] == 1 ) {
+			if ( state.playerFolded[p] ) {
 				++ret;
 			}
 		}
@@ -152,7 +153,7 @@ public class Game {
 	public int numActingPlayers() {
 		int ret = 0;
 		for ( int p = 0; p < numPlayers; ++p ) {
-			if (state.playerFolded[p] == 0 && state.spent[p] < stack[p] ) {
+			if (!state.playerFolded[p]  && state.spent[p] < stack[p] ) {
 				++ret;
 			}
 		}
@@ -212,7 +213,7 @@ public class Game {
 		++state.numActions[state.round];
 		switch ( action.type ) {
 		case a_fold :
-			state.playerFolded[p] = 1;
+			state.playerFolded[p] = true;
 			break;
 		case a_call :
 			if ( state.maxSpent > stack[p] ) {
