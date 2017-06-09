@@ -56,7 +56,7 @@ public class Game {
 	
 	
 	public Game() {
-		state = new State(this, 0l);
+		state = new State();
 //		rand.setSeed(System.currentTimeMillis());
 		rand.setSeed(0);
 	}
@@ -276,4 +276,12 @@ public class Game {
 			}
 		}
 	}
+	
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		Game newGame = (Game) super.clone();
+		
+		return newGame;
+	}
+	
 }

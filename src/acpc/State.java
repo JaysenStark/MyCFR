@@ -1,8 +1,8 @@
 package acpc;
 
-public class State {
+public class State implements Cloneable {
 	
-	public final long handId;
+	public long handId;
 	public int maxSpent;
 	public int [] spent;
 	public int minNoLimitRaiseTo;
@@ -14,8 +14,12 @@ public class State {
 	public int [][] actingPlayer;
 	public int [] boardCards;
 	public int [][] holeCards;
+	public Game game;
+	
+	public State() {}
 
-	public State(Game game, long handId){
+	public void initState(Game game, long handId){
+		this.game = game;
 		this.handId = handId;
 		maxSpent = 0;
 		
@@ -63,6 +67,21 @@ public class State {
 		holeCards = new int [game.numPlayers][game.MAX_NUM_HOLECARDS];	
 	}
 	
+	protected State clone() throws CloneNotSupportedException {
+		
+//		public Action [][] action;
+//		public int [][] actingPlayer;
+//		public int [][] holeCards;
+		
+		State newState = (State) super.clone();
+		newState.spent = (int []) spent.clone();
+		newState.playerFolded = (boolean []) playerFolded.clone();
+		newState.numActions = (int []) numActions.clone();
+		newState.boardCards = (int []) boardCards.clone(); 
+		
+		
+		return null;
+	}
 	
 
 }
