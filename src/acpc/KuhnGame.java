@@ -64,8 +64,13 @@ public class KuhnGame extends Game implements KuhnGameConstants {
 	}
 	
 	public static void main(String[] args) {
-		KuhnGame g = new KuhnGame();
-		g.printGameConfig();
+//		KuhnGame g = new KuhnGame();
+//		g.printGameConfig();
+	}
+	
+	@Override
+	public KuhnGame clone() throws CloneNotSupportedException {
+		return (KuhnGame) super.clone();
 	}
 	
 }

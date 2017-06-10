@@ -278,10 +278,23 @@ public class Game {
 	}
 	
 	@Override
-	protected Object clone() throws CloneNotSupportedException {
+	public Object clone() throws CloneNotSupportedException {
 		Game newGame = (Game) super.clone();
-		
 		return newGame;
+	}
+	
+	public static void main(String[] args) {
+		Game game = new Game();
+		game.state.initState(game, 0);
+		
+//		try {
+//			Game newGame = (Game) game.clone();
+//		} catch (CloneNotSupportedException e) {
+//			e.printStackTrace();
+//		}
+//		
+//		assert (newGame.state != game.state);
+		System.out.println("end");
 	}
 	
 }
