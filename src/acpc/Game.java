@@ -2,7 +2,7 @@ package acpc;
 
 import java.util.Random;
 
-import exception.TwoManyActionsException;
+import exception.TooManyActionsException;
 
 /**
  * @author jaysen
@@ -62,7 +62,7 @@ public class Game implements Cloneable {
 	}
 	
 	/* sizes[0] minRaiseSize, size[1] maxRaiseSize */
-	public boolean raiseIsValid(int [] sizes) throws TwoManyActionsException {
+	public boolean raiseIsValid(int [] sizes) throws TooManyActionsException {
 		int p;
 		if ( numRaises() >= maxRaises[state.round] ) {
 			return false;

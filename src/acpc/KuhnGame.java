@@ -12,6 +12,9 @@ public class KuhnGame extends Game implements KuhnGameConstants, Cloneable {
 		numBoardCards = NUM_BOARDCARDS;
 		firstPlayer = FIRST_PLAYER;
 		stack = new int[numPlayers];
+		for (int i = 0; i < stack.length; ++i) {
+			stack[i] = 2;
+		}
 		blind = BLIND;
 		bettingType = BETTING_TYPE;
 		maxRaises = MAX_RAISES;

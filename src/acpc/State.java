@@ -61,9 +61,9 @@ public class State implements Cloneable {
 		round = 0;
 		finished = false;
 		
-		action = new Action[game.numRounds][game.MAX_NUM_ACTIONS];
-		actingPlayer = new int[game.numRounds][game.MAX_NUM_ACTIONS];
-		boardCards = new int[game.MAX_NUM_ACTIONS];
+		action = new Action[game.numRounds][Game.MAX_NUM_ACTIONS];
+		actingPlayer = new int[game.numRounds][Game.MAX_NUM_ACTIONS];
+		boardCards = new int[Game.MAX_NUM_ACTIONS];
 		holeCards = new int [game.numPlayers][game.MAX_NUM_HOLECARDS];	
 	}
 	
