@@ -8,7 +8,7 @@ import exception.TwoManyActionsException;
  * @author jaysen
  *
  */
-public class Game {
+public class Game implements Cloneable {
 	
 	public static final int MAX_NUM_ACTIONS = 64;
 	public static final int NUM_ACTION_TYPES = 3;
@@ -286,14 +286,14 @@ public class Game {
 	public static void main(String[] args) {
 		Game game = new Game();
 		game.state.initState(game, 0);
+		Game newGame = null;
+		try {
+			newGame = (Game) game.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
 		
-//		try {
-//			Game newGame = (Game) game.clone();
-//		} catch (CloneNotSupportedException e) {
-//			e.printStackTrace();
-//		}
-//		
-//		assert (newGame.state != game.state);
+		assert (newGame.state != game.state);
 		System.out.println("end");
 	}
 	

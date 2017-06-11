@@ -1,6 +1,6 @@
 package acpc;
 
-public class KuhnGame extends Game implements KuhnGameConstants {
+public class KuhnGame extends Game implements KuhnGameConstants, Cloneable {
 	
 	public KuhnGame() {
 //		System.out.println("Kuhn Game is choosed.");
@@ -69,7 +69,7 @@ public class KuhnGame extends Game implements KuhnGameConstants {
 	}
 	
 	@Override
-	public KuhnGame clone() throws CloneNotSupportedException {
+	public Object clone() throws CloneNotSupportedException {
 		return (KuhnGame) super.clone();
 	}
 	
