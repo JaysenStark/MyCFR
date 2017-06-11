@@ -1,15 +1,17 @@
 package abstraction;
 
+import node.BettingNode;
 import exception.NotSupportParameterException;
 import acpc.Game;
 import acpc.KuhnGame;
 import parameter.AbsParameter;
+import tree.BettingTree;
 
 public class GameAbstraction {
 	
 	public Game game;
 	public ActionAbstraction actionAbs;
-	public long [] numEntriesPerBucket;
+	public int [] numEntriesPerBucket;
 	
 	public GameAbstraction(AbsParameter param) throws Exception {
 		
@@ -27,11 +29,13 @@ public class GameAbstraction {
 		default:
 			throw new NotSupportParameterException("Game Type Not Supported!");
 		}
+		/* init game state */
+		game.state.initState(game, 0);
 		
 		/* choose action abstraction type */
 		switch (param.actionAbsType) {
 		case "NullActionAbstraction":
-			//actionAbs = ;TODO
+			actionAbs = new NullActionAbstraction();
 			break;
 		case "FcpaActionAbstraction":
 			//TODO
@@ -41,11 +45,26 @@ public class GameAbstraction {
 		}
 		
 		/* init num_entries_per_bucket to zero */
-		numEntriesPerBucket = new long[game.numRounds];
+		numEntriesPerBucket = new int[game.numRounds];
 		
 		/* build betting tree */
+		BettingNode root = BettingTree.buildTree(game, actionAbs, numEntriesPerBucket);
 		//root = TODO 
 		
+	}
+	
+	public static void main(String[] args) {
+		Game game = new KuhnGame();
+		game.state.initState(game, 0);
+		ActionAbstraction actionAbs = new NullActionAbstraction();
+		int [] numEntriesPerBucket = new int[game.numRounds];
+		try {
+			BettingNode root = BettingTree.buildTree(game, actionAbs, numEntriesPerBucket);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("end");
 	}
 	
 }

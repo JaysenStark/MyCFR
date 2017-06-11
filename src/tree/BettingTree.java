@@ -1,7 +1,9 @@
 package tree;
 
 import node.BettingNode;
+import node.InfoSet;
 import node.TerminalNode;
+import abstraction.AbstractionConstants;
 import abstraction.ActionAbstraction;
 import acpc.Action;
 import acpc.Game;
@@ -9,8 +11,8 @@ import acpc.State;
 
 
 public class BettingTree {
-    public BettingNode buildTree(Game game, ActionAbstraction actionAbs) throws Exception {
-    	BettingNode node;
+    public static BettingNode buildTree(Game game, ActionAbstraction actionAbs, int [] numEntriesPerBucket) throws Exception {
+    	BettingNode node = null;
     	State state = game.state;
     	
     	if ( state.finished ) {
@@ -44,18 +46,20 @@ public class BettingTree {
     	}
     	
     	/* Choice node.  First, compute number of different allowable actions */
-    	Action [] actions = new Action[actionAbs.MAX_ABSTRACT_ACTIONS];
-    	/* Next, grab the index for this node into the regrets and avg_strategy */
+    	Action [] actions = new Action[AbstractionConstants.MAX_ABSTRACT_ACTIONS];
     	int numChoices = actionAbs.getActions(game, actions);
-    	// TODO
-    	long solnIdx = 0;
     	
+    	/* Next, grab the index for this node into the regrets and avg_strategy */
+    	int solnIdx = numEntriesPerBucket[state.round];
+    	/* Update number of entries */
+    	numEntriesPerBucket[state.round] += numChoices;
+    	
+    	 /* Recurse to create children */
     	BettingNode firstChild = null, lastChild = null;
     	for ( int a = 0; a < numChoices; ++a ) {
-    		// create a new copy of game
-    		// TODO
+    		Game subGame = (Game) game.clone();
     		subGame.doAction(actions[a]);
-    		BettingNode child = buildTree(subGame, actionAbs);
+    		BettingNode child = buildTree(subGame, actionAbs, numEntriesPerBucket);
     		if ( lastChild != null ) {
     			lastChild.setSibling(child);
     		} else {
