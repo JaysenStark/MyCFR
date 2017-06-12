@@ -72,8 +72,8 @@ public class KuhnGame extends Game implements KuhnGameConstants, Cloneable {
 	}
 	
 	@Override
-	public Object clone() throws CloneNotSupportedException {
-		return (KuhnGame) super.clone();
+	public Object clone() {
+		return (Game) super.clone();
 	}
 	
 }

@@ -309,8 +309,15 @@ public class Game implements Cloneable {
 	}
 	
 	@Override
-	public Object clone() throws CloneNotSupportedException {
-		Game newGame = (Game) super.clone();
+	public Object clone() {
+		Game newGame = null;
+		try {
+			newGame = (Game) super.clone();
+		} catch (CloneNotSupportedException e) {
+			System.out.println("ERROR: game object clone fails!");
+			e.printStackTrace();
+		}
+		newGame.state = (State) state.clone();
 		return newGame;
 	}
 	
@@ -318,11 +325,8 @@ public class Game implements Cloneable {
 		Game game = new Game();
 		game.state.initState(game, 0);
 		Game newGame = null;
-		try {
-			newGame = (Game) game.clone();
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
+		
+		newGame = (Game) game.clone();
 		
 		assert (newGame.state != game.state);
 		System.out.println("end");
