@@ -191,30 +191,41 @@ public class Game implements Cloneable {
 		int p = currentPlayer();
 		if ( action.type == ActionType.a_raise ) {
 			if ( !raiseIsValid(sizes)) {
+				/* there are no valid raise sizes */
 				return false;
 			}
+			
 			if ( bettingType == "no-limit" ) {
+				/* no limit games have a size */
 				if ( action.size < sizes[0] ) {
 					if ( !tryFixing ) {
 						return false;
 					}
 					System.out.printf("WARNING: raise of %d increased to %d\n", action.size, sizes[0]);
-				} else {
-					;
-				}
-			} else if ( action.type == ActionType.a_fold ) {
-				if ( state.spent[p] == state.maxSpent || state.spent[p] == stack[p] ) {
-					return false;
-				}
-				if ( action.size != 0 ) {
-					System.out.println("WARNING: size given for fold" );
-					action.size = 0;
+					action.size = sizes[0];
+				} else if ( action.size > sizes[1] ) {
+					/* bet size is too big */
+					if ( !tryFixing ) {
+						return false;
+					}
+					System.out.printf("WARNING: raise of %d decreased to %d\n", action.size, sizes[1]);
+					action.size = sizes[1];
 				}
 			} else {
-				if ( action.size != 0 ) {
-					System.out.println("WARNING: size given for something other than a no-limit raise");
-					action.size = 0;
-				}
+				;
+			}
+		} else if ( action.type == ActionType.a_fold ) {
+			if ( state.spent[p] == state.maxSpent || state.spent[p] == stack[p] ) {
+				return false;
+			}
+			if ( action.size != 0 ) {
+				System.out.println("WARNING: size given for fold" );
+				action.size = 0;
+			}
+		} else {
+			if ( action.size != 0 ) {
+				System.out.println("WARNING: size given for something other than a no-limit raise");
+				action.size = 0;
 			}
 		}
 		return true;
@@ -252,6 +263,7 @@ public class Game implements Cloneable {
 				} 
 				state.maxSpent = action.size;
 			} else {
+				/* limit */
 				if ( state.maxSpent + raiseSize[state.round] > stack[p] ) {
 					/* raise puts player all-in */
 					state.maxSpent = stack[p];
