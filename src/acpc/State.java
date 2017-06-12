@@ -68,23 +68,35 @@ public class State implements Cloneable {
 	}
 	
 	@Override
-	protected Object clone() throws CloneNotSupportedException {
+	public Object clone() {
 	
-		State newState = (State) super.clone();
+		State newState = null;
+		try {
+			newState = (State) super.clone();
+		} catch (CloneNotSupportedException e) {
+			System.out.println("ERROR: state object clone fails!");
+			e.printStackTrace();
+		}
 		newState.spent = (int []) spent.clone();
 		newState.playerFolded = (boolean []) playerFolded.clone();
 		newState.numActions = (int []) numActions.clone();
 		newState.boardCards = (int []) boardCards.clone(); 
+		
+		newState.action = (Action [][]) action.clone();
 		for ( int i = 0; i < action.length; ++i ) {
 			newState.action[i] = (Action []) action[i].clone(); 
 		}
+		
+		newState.actingPlayer = (int [][]) actingPlayer.clone();
 		for ( int i = 0; i < actingPlayer.length; ++i ) {
 			newState.actingPlayer[i] = (int []) actingPlayer[i].clone();
 		}
-		for ( int i = 0; i < boardCards.length; ++i ) {
+		
+		newState.holeCards = (int [][]) holeCards.clone();
+		for ( int i = 0; i < holeCards.length; ++i ) {
 			newState.holeCards[i] = (int []) holeCards[i].clone();
 		}
-	
+		
 		return newState;
 	}
 	
