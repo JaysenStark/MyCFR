@@ -63,7 +63,7 @@ public class Game implements Cloneable {
 	
 	/* sizes[0] minRaiseSize, size[1] maxRaiseSize */
 	public boolean raiseIsValid(int [] sizes) throws TooManyActionsException {
-		int p;
+		
 		if ( numRaises() >= maxRaises[state.round] ) {
 			return false;
 		}
@@ -80,8 +80,25 @@ public class Game implements Cloneable {
 			sizes[1] = 0;
 			return true;
 		}
-		//TODO
-		return false;
+		
+		int p = currentPlayer();
+		sizes[0] = state.minNoLimitRaiseTo;
+		sizes[1] = stack[p];
+		
+		/* handle case where remaining player stack is too small */
+		if ( sizes[0] > stack[p] ) {
+			/* can't handle the minimum bet size - can we bet at all? */
+			if ( state.maxSpent >= stack[p] ) {
+				/* not enough money to increase current bet */
+				return false;
+			} else {
+				/* can raise by going all-in */
+				sizes[0] = sizes[1];
+				return true;
+			}
+		}
+		
+		return true;
 	}
 	
 	public int currentPlayer() {
@@ -103,8 +120,10 @@ public class Game implements Cloneable {
 	public int numRaises() {
 		int ret = 0;
 		for ( int i : state.numActions ) {
-			if ( state.action[state.round][i].type == ActionType.a_raise ) {
-				++ret;
+			if (state.action[state.round][i] != null ) {
+				if ( state.action[state.round][i].type == ActionType.a_raise ) {
+					++ret;
+				}
 			}
 		}
 		return ret;
