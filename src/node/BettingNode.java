@@ -30,14 +30,6 @@ public abstract class BettingNode {
 	
 	public BettingNode getSibling() { return sibling; }
 	
-	
-
-	/**
-	 * 计算utility
-	 * @param hand
-	 * @param position
-	 * @return
-	 */
 //	public int evaluate(Hand hand,int position) {
 //		return 0;
 //	}

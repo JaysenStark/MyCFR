@@ -58,10 +58,10 @@ public class GameAbstraction {
 		game.state.initState(game, 0);
 		ActionAbstraction actionAbs = new NullActionAbstraction();
 		int [] numEntriesPerBucket = new int[game.numRounds];
+		BettingNode root = null;
 		try {
-			BettingNode root = BettingTree.buildTree(game, actionAbs, numEntriesPerBucket);
+			root = BettingTree.buildTree(game, actionAbs, numEntriesPerBucket);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println("end");

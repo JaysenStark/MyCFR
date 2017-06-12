@@ -16,6 +16,7 @@ public class BettingTree {
     	State state = game.state;
     	
     	if ( state.finished ) {
+    		/* Terminal node */
     		switch ( game.numPlayers ) {
     		case 2 : 
     			int showdown = ( state.playerFolded[0] || state.playerFolded[1] ) ? 0 : 1;
@@ -43,6 +44,7 @@ public class BettingTree {
     			assert (false);
     			break;
     		}
+    		return node;
     	}
     	
     	/* Choice node.  First, compute number of different allowable actions */
@@ -60,6 +62,7 @@ public class BettingTree {
     		Game subGame = (Game) game.clone();
     		subGame.doAction(actions[a]);
     		BettingNode child = buildTree(subGame, actionAbs, numEntriesPerBucket);
+    		assert (child != null);
     		if ( lastChild != null ) {
     			lastChild.setSibling(child);
     		} else {
