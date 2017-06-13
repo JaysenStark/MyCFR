@@ -62,7 +62,7 @@ public class Game implements Cloneable {
 	}
 	
 	/* sizes[0] minRaiseSize, size[1] maxRaiseSize */
-	public boolean raiseIsValid(int [] sizes) throws TooManyActionsException {
+	public boolean raiseIsValid(int [] sizes) {
 		
 		if ( numRaises() >= maxRaises[state.round] ) {
 			return false;
@@ -183,7 +183,7 @@ public class Game implements Cloneable {
 		//TODO
 	}
 
-	public boolean isValidAction(Action action, boolean tryFixing) throws Exception {
+	public boolean isValidAction(Action action, boolean tryFixing) {
 		int [] sizes = new int[2];
 		if ( stateFinished() || action.type == ActionType.a_invalid ) {
 			return false;
