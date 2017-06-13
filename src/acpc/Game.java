@@ -179,8 +179,41 @@ public class Game implements Cloneable {
 		return ret;
 	}
 	
-	public void dealCards() {
+	public int dealCard(final Random random, int [] deck, int numCards) {
+		int ret = -1;
+		int i = random.nextInt() % numCards;
+		ret = deck[i];
+		deck[i] = deck[numCards - 1];
+		return ret;
+	}
+	
+	public void dealCards(final Game game, final Random random) {
 		//TODO
+		int numCards = 0;
+		int [] deck = new int[game.numRanks * game.numSuits];
+		/* create deck first */
+		for ( int s = 0; s < game.numSuits; ++s ) {
+			for ( int r = 0; r < game.numRanks; ++r ) {
+				deck[numCards] = Card.makeCard(r, s);
+				++numCards;
+			}
+		}
+		/* deal hole cards for each player */
+		for ( int p = 0; p < game.numPlayers; ++p ) {
+			for ( int i = 0; i < game.numHoleCards; ++i ) {
+				game.state.holeCards[p][i] = dealCard(random, deck, numCards);
+				--numCards;
+			}
+		}
+		/* deal public cards */
+		int s = 0;
+		for ( int r = 0; r < game.numRounds; ++r ) {
+			for ( int i = 0; i < game.numBoardCards[r]; ++i ) {
+				game.state.boardCards[s] = dealCard(random, deck, numCards);
+				--numCards;
+				++s;
+			}
+		}
 	}
 
 	public boolean isValidAction(Action action, boolean tryFixing) {
