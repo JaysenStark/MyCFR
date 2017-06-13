@@ -51,15 +51,17 @@ public class GameAbstraction {
 		BettingNode root = BettingTree.buildTree(game, actionAbs, numEntriesPerBucket);
 		
 		/* Create card abstraction */
+		CardAbstraction cardAbs = null;
 		switch (param.cardAbsType) {
 		case "NullCardAbstraction" :
-			CardAbstraction cardAbs = new NullCardAbstraction();
+			cardAbs = new NullCardAbstraction(game);
 			break;
 		case "BlindCardAbstraction" :
 			//TODO
 			System.out.println("ERROR: BlindCardAbstraction not implemented yet!");
 			break;
 		}
+		
 		
 	}
 	
@@ -76,7 +78,7 @@ public class GameAbstraction {
 		}
 		
 		int sum = visit(root);
-		assert( sum == 5 );
+		assert( sum == 9 );
 		System.out.println("build tree success!");
 	}
 	
@@ -84,10 +86,11 @@ public class GameAbstraction {
 		int sum = 0;
 		if ( node == null ) {
 			return sum;
+		} else {
+			sum += 1;
 		}
 		BettingNode child = node.getChild();
 		if ( child == null ) {
-			sum += 1;
 			return sum;
 		}
 		do {

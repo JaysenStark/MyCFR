@@ -331,5 +331,22 @@ public class Game implements Cloneable {
 		assert (newGame.state != game.state);
 		System.out.println("end");
 	}
+
+	/* board card start index */
+	public int bcStart(int round) {
+		int start = 0;
+		for ( int r = 0; r < round; ++r ) {
+			start += numBoardCards[r];
+		}
+		return start;
+	}
+
+	public int sumBoardCards(int round) {
+		int total = 0;
+		for ( int r = 0; r <= round; ++r ) {
+			total += numBoardCards[r];
+		}
+		return total;
+	}
 	
 }
