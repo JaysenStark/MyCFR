@@ -7,7 +7,7 @@ import acpc.Game;
 public class NullActionAbstraction extends ActionAbstraction implements AbstractionConstants {
 
 	@Override
-	public int getActions(Game game, Action[] actions) throws Exception {
+	public int getActions(Game game, Action[] actions) {
 		int numActions = 0;
 		boolean error = false;
 		ActionType [] types = ActionType.values();
@@ -23,7 +23,7 @@ public class NullActionAbstraction extends ActionAbstraction implements Abstract
 						error = true;
 						break;
 					}
-					for ( int s = sizes[0]; s < sizes[1]; ++s ) {
+					for ( int s = sizes[0]; s <= sizes[1]; ++s ) {
 						actions[numActions] = new Action(type, s);
 						++numActions;
 					}
