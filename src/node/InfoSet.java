@@ -2,13 +2,13 @@ package node;
 
 public class InfoSet extends BettingNode{
 	
-	public long solnIdx;
+	public int solnIdx;
 	public int num_choices;
 	public int player;
 	public int round;
 	public BettingNode child;
 
-	public InfoSet(long solnIdx, int num_choices, int player, int round, BettingNode child) {
+	public InfoSet(int solnIdx, int num_choices, int player, int round, BettingNode child) {
 		this.solnIdx = solnIdx;
 		this.num_choices = num_choices;
 		this.player = player;
@@ -17,7 +17,7 @@ public class InfoSet extends BettingNode{
 	}
 	
 	@Override
-	public long getSolnIdx() {
+	public int getSolnIdx() {
 		return solnIdx;
 	}
 

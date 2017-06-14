@@ -1,4 +1,5 @@
 package node;
+import acpc.Hand;
 import exception.NotImplementedException;
 
 
@@ -12,7 +13,7 @@ public abstract class BettingNode {
 		sibling = null;
 	}
 	
-	public long getSolnIdx(){ return 0l; };
+	public int getSolnIdx(){ return 0; };
 	
 	public int getNumChoices(){ return 0; };
 
@@ -24,15 +25,11 @@ public abstract class BettingNode {
 	
 	public boolean didPlayerFold(int position) { return false; }
 	
-	public void setSibling(BettingNode sibling) {
-		this.sibling = sibling;
-	}
+	public void setSibling(BettingNode sibling) { this.sibling = sibling; }
 	
 	public BettingNode getSibling() { return sibling; }
 	
-//	public int evaluate(Hand hand,int position) {
-//		return 0;
-//	}
+	public int evaluate(Hand hand,int position) { return 0; }
 		
 	
 }
