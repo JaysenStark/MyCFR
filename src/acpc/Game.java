@@ -187,29 +187,28 @@ public class Game implements Cloneable {
 		return ret;
 	}
 	
-	public void dealCards(final Game game, final Random random) {
-		//TODO
+	public void dealCards(final Random random, State state) {
 		int numCards = 0;
-		int [] deck = new int[game.numRanks * game.numSuits];
+		int [] deck = new int[numRanks * numSuits];
 		/* create deck first */
-		for ( int s = 0; s < game.numSuits; ++s ) {
-			for ( int r = 0; r < game.numRanks; ++r ) {
+		for ( int s = 0; s < numSuits; ++s ) {
+			for ( int r = 0; r < numRanks; ++r ) {
 				deck[numCards] = Card.makeCard(r, s);
 				++numCards;
 			}
 		}
 		/* deal hole cards for each player */
-		for ( int p = 0; p < game.numPlayers; ++p ) {
-			for ( int i = 0; i < game.numHoleCards; ++i ) {
-				game.state.holeCards[p][i] = dealCard(random, deck, numCards);
+		for ( int p = 0; p < numPlayers; ++p ) {
+			for ( int i = 0; i < numHoleCards; ++i ) {
+				state.holeCards[p][i] = dealCard(random, deck, numCards);
 				--numCards;
 			}
 		}
 		/* deal public cards */
 		int s = 0;
-		for ( int r = 0; r < game.numRounds; ++r ) {
-			for ( int i = 0; i < game.numBoardCards[r]; ++i ) {
-				game.state.boardCards[s] = dealCard(random, deck, numCards);
+		for ( int r = 0; r < numRounds; ++r ) {
+			for ( int i = 0; i < numBoardCards[r]; ++i ) {
+				state.boardCards[s] = dealCard(random, deck, numCards);
 				--numCards;
 				++s;
 			}
