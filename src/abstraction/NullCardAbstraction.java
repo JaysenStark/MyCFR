@@ -26,9 +26,9 @@ public class NullCardAbstraction extends CardAbstraction {
 	}
 
 	@Override
-	public int getBucket(Game game, BettingNode node) {
-		int [] boardCards = game.state.boardCards;
-		int [] currentPlayerHoleCards = game.state.holeCards[node.getPlayer()];
+	public int getBucket(Game game, BettingNode node, Hand hand) {
+		int [] boardCards = hand.boardCards;
+		int [] currentPlayerHoleCards = hand.holeCards[node.getPlayer()];
 		int round = node.getRound();
 		return getBucketInternal(game, boardCards, currentPlayerHoleCards, round);
 	}
