@@ -10,13 +10,15 @@ import tree.BettingTree;
 public class GameAbstraction {
 	
 	public Game game;
-	public ActionAbstraction actionAbs;
 	public int [] numEntriesPerBucket;
+	public BettingNode root;
+	public CardAbstraction cardAbs;
+	public final ActionAbstraction actionAbs;
 	
-	public GameAbstraction(AbsParameter param) throws Exception {
+	public GameAbstraction(AbsParameter params) {
 		
 		/* choose game type */
-		switch (param.gameType) {
+		switch (params.gameType) {
 		case "Kuhn":
 			game = new KuhnGame();
 			break;
@@ -27,32 +29,38 @@ public class GameAbstraction {
 			//TODO
 			break;
 		default:
-			throw new NotSupportParameterException("Game Type Not Supported!");
+			System.out.println("Error: Game Type Not Supported!");
 		}
 		/* init game state */
 		game.state.initState(game, 0);
 		
 		/* choose action abstraction type */
-		switch (param.actionAbsType) {
+		switch (params.actionAbsType) {
 		case "NullActionAbstraction":
 			actionAbs = new NullActionAbstraction();
 			break;
 		case "FcpaActionAbstraction":
 			//TODO
+			actionAbs = new FcpaActionAbstraction();
 			break;
 		default:
-			throw new NotSupportParameterException("Action Abstraction Parameter Not Supported!"); 
+			actionAbs = null;
+			System.out.println("Error: Action Abstraction Parameter Not Supported!"); 
+			assert( false );
 		}
 		
 		/* init num_entries_per_bucket to zero */
 		numEntriesPerBucket = new int[game.numRounds];
 		
 		/* build betting tree */
-		BettingNode root = BettingTree.buildTree(game, actionAbs, numEntriesPerBucket);
+		try {
+			root = BettingTree.buildTree(game, actionAbs, numEntriesPerBucket);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		/* Create card abstraction */
-		CardAbstraction cardAbs = null;
-		switch (param.cardAbsType) {
+		switch (params.cardAbsType) {
 		case "NullCardAbstraction" :
 			cardAbs = new NullCardAbstraction(game);
 			break;
@@ -60,8 +68,11 @@ public class GameAbstraction {
 			//TODO
 			System.out.println("ERROR: BlindCardAbstraction not implemented yet!");
 			break;
+		default:
+			cardAbs = null;
+			System.out.println("ERROR: Card Abstraction Parameter Not Supported!");
+			assert( false );
 		}
-		
 		
 	}
 	
