@@ -7,7 +7,7 @@ public class Hand {
 	public int [][] precomputedBuckets;
 	
 	/* only support 2p */
-	int [] showdownValue;
+	public int [] showdownValue;
 	
 	public Hand(Game game) {
 		boardCards = new int[game.MAX_NUM_HOLECARDS];
