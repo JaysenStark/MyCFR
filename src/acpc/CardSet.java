@@ -45,7 +45,7 @@ public class CardSet extends CardSetConstants{
         fullHouseOtherVal = HANDCLASS_FULL_HOUSE - HANDCLASS_TRIPS;
     }
     
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
     	;
 	}
        
