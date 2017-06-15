@@ -13,6 +13,21 @@ public class NullCardAbstraction extends CardAbstraction {
 	public NullCardAbstraction(Game game) {
 		this.game = game;
 		mNumBuckets = new int[game.numRounds];
+		
+		/* Precompute number of buckets per round */
+		int deckSize = game.numRanks * game.numSuits;
+		mNumBuckets[0] = 1;
+		for ( int i = 0; i < game.numHoleCards; ++i ) {
+			mNumBuckets[0] *= deckSize;
+		}
+		for ( int r = 0; r < game.numRounds; ++r ) {
+			if ( r > 0 ) {
+				mNumBuckets[r] = mNumBuckets[r - 1];
+				for ( int i = 0; i < game.numBoardCards[r]; ++i ) {
+					mNumBuckets[r] *= deckSize;
+				}
+			}
+		}
 	}
 	
 	@Override
