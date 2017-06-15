@@ -19,7 +19,7 @@ public class BettingTree {
     		/* Terminal node */
     		switch ( game.numPlayers ) {
     		case 2 : 
-    			int showdown = ( state.playerFolded[0] || state.playerFolded[1] ) ? 0 : 1;
+    			boolean showdown = ( state.playerFolded[0] || state.playerFolded[1] ) ? false : true;
     			int [] foldValue = new int[2];
     			int money = -1;
     			for ( int p = 0; p < 2; ++p ) {
