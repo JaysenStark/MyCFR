@@ -110,5 +110,30 @@ public class GameAbstraction {
 		} while ( child != null );
 		return sum;
 	}
+
+	public void countEntries(int [] numEntriesPerBucket, int [] totalNumEntries) {
+		countEntries(root, numEntriesPerBucket, totalNumEntries);
+	}
+	
+	public void countEntries(BettingNode node, int [] numEntriesPerBucket, int [] totalNumEntries) {
+		BettingNode child = node.getChild();
+		if ( child == null ) {
+			/* terminal node */
+			return ;
+		}
+		final int round = node.getRound();
+		final int numChoices = node.getNumChoices();
+		
+		/* Update entries counts */
+		numEntriesPerBucket[round] += numChoices;
+		final int buckets = cardAbs.numBuckets(game, node);
+		totalNumEntries[round] += buckets * numChoices;
+		
+		/* Recurse */
+		for ( int c = 0; c < numChoices; ++c ) {
+			countEntries(child, numEntriesPerBucket, totalNumEntries);
+			child = child.getSibling();
+		}
+	}
 	
 }
