@@ -4,8 +4,8 @@ import exception.NotImplementedException;
 
 
 public abstract class BettingNode {
-	protected int showdown; /* 1 for true */
-	protected int[] fold_value = new int[2]; /* 1 for win, -1 for lose, 0 for tie */
+	protected boolean showdown; /* 1 for true */
+	protected int[] foldValue = new int[2]; /* 1 for win, -1 for lose, 0 for tie */
 	protected int money; 
 	protected BettingNode sibling = null;
 	
