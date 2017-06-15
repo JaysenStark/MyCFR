@@ -14,7 +14,7 @@ public class Card {
 	}
 	
 	public static int makeCard(int rank, int suit) {
-		return rank * MAX_SUITS + rank;
+		return rank * MAX_SUITS + suit;
 	}
 
 }
