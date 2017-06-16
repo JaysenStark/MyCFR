@@ -1,7 +1,6 @@
 package abstraction;
 
 import node.BettingNode;
-import exception.NotSupportParameterException;
 import acpc.Game;
 import acpc.KuhnGame;
 import parameter.AbsParameter;
@@ -12,7 +11,7 @@ public class GameAbstraction {
 	public Game game;
 	public int [] numEntriesPerBucket;
 	public BettingNode root;
-	public CardAbstraction cardAbs;
+	public final CardAbstraction cardAbs;
 	public final ActionAbstraction actionAbs;
 	
 	public GameAbstraction(AbsParameter params) {
@@ -30,8 +29,9 @@ public class GameAbstraction {
 			break;
 		default:
 			System.out.println("Error: Game Type Not Supported!");
+			System.exit(-1);
 		}
-		/* init game state */
+		/* initialize game state */
 		game.state.initState(game, 0);
 		
 		/* choose action abstraction type */
@@ -66,6 +66,7 @@ public class GameAbstraction {
 			break;
 		case "BlindCardAbstraction" :
 			//TODO
+			cardAbs = null;
 			System.out.println("ERROR: BlindCardAbstraction not implemented yet!");
 			break;
 		default:

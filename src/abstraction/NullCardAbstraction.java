@@ -59,7 +59,7 @@ public class NullCardAbstraction extends CardAbstraction {
 			bucket += Card.rankOfCard(card) * game.numSuits + Card.suitOfCard(card);
 		}
 		for ( int r = 0; r <= round; ++r ) {
-			for ( int i = game.bcStart(r); i < game.sumBoardCards(r); ++i) {
+			for ( int i = game.bcStart(r); i < game.sumBoardCards(r); ++i ) {
 				bucket *= deckSize;
 				int card = boardCards[i];
 				bucket += Card.rankOfCard(card) * game.numSuits + Card.suitOfCard(card);

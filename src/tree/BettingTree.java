@@ -11,7 +11,7 @@ import acpc.State;
 
 
 public class BettingTree {
-    public static BettingNode buildTree(Game game, ActionAbstraction actionAbs, int [] numEntriesPerBucket) throws Exception {
+    public static BettingNode buildTree(Game game, ActionAbstraction actionAbs, int [] numEntriesPerBucket) {
     	BettingNode node = null;
     	State state = game.state;
     	
