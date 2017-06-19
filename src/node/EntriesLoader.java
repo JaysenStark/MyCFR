@@ -1,6 +1,12 @@
 package node;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class EntriesLoader extends Entries {
 	
@@ -21,12 +27,30 @@ public class EntriesLoader extends Entries {
 	}
 	
 	@Override
-	public boolean write(File file) {
+	public boolean dump(DataOutputStream dis) {
+		try {
+			for ( int i = 0 ; i < entries.length; ++i ) {
+				dis.writeInt(entries[i]);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("ERROR: failed to write to DataOutputStream!");
+		}
+		
 		return true;
 	}
 	
 	@Override
-	public boolean load(File file) {
+	public boolean load(DataInputStream dis) {
+		try {
+			for ( int i = 0; i < entries.length; ++i ) {
+				entries[i] = dis.readInt();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("ERROR: failed to read from DataInputStream!");
+		}
+		
 		return true;
 	}
 	

@@ -1,5 +1,12 @@
 package solver;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Random;
 import node.BettingNode;
 import node.Entries;
@@ -181,5 +188,77 @@ public class PureCFRMachine {
 		
 		return retVal;
 	} //  end walkPureCFR
-
+	
+	public void dumpStrategy(File file) {
+		FileOutputStream os = null;
+		DataOutputStream dos = null;
+		try {
+			os = new FileOutputStream(file);
+			dos = new DataOutputStream(os);
+			for ( int r = 0; r < avgStrategy.length; ++r ) {
+				avgStrategy[r].dump(dos);
+			}
+			dos.close();
+			os.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void dumpRegret(File file) {
+		FileOutputStream os = null;
+		DataOutputStream dos = null;
+		try {
+			os = new FileOutputStream(file);
+			dos = new DataOutputStream(os);
+			for ( int r = 0; r < regrets.length; ++r ) {
+				regrets[r].dump(dos);
+			}
+			dos.close();
+			os.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void loadStrategy(File file) {
+		FileInputStream is = null;
+		DataInputStream dis = null;
+		try {
+			is = new FileInputStream(file);
+			dis = new DataInputStream(is);
+			for ( int r = 0; r < avgStrategy.length; ++ r ) {
+				avgStrategy[r].load(dis);
+			}
+			dis.close();
+			is.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void loadRegret(File file) {
+		FileInputStream is = null;
+		DataInputStream dis = null;
+		try {
+			is = new FileInputStream(file);
+			dis = new DataInputStream(is);
+			for ( int r = 0; r < regrets.length; ++ r ) {
+				regrets[r].load(dis);
+			}
+			dis.close();
+			is.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 }

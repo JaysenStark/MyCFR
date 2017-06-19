@@ -1,5 +1,7 @@
 package node;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 
 import abstraction.AbstractionConstants;
@@ -27,13 +29,13 @@ public class Entries implements AbstractionConstants{
 		return false;
 	}
 	
-	public boolean write(File file) {
+	public boolean dump(DataOutputStream dis) {
 		System.out.println("ERROR: call a not implemented function write() on Entries!");
 		assert (false);
 		return false;
 	}
 	
-	public boolean load(File file) {
+	public boolean load(DataInputStream dis) {
 		System.out.println("ERROR: call a not implemented function load() on Entries!");
 		assert (false);
 		return false;
