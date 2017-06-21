@@ -33,10 +33,10 @@ public class PureCFR {
 				String prefix = "iter-";
 				String filename = prefix + (offset + count) + suffix;
 				File file = new File(filename);
-				pcm.dumpRegret(file);
+//				pcm.dumpRegret(file);
 			}
 		}
-//		pcm.loadRegret("iter-10000.regret");
+		System.out.println("111");
 		
 	}
 	

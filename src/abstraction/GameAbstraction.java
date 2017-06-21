@@ -3,16 +3,19 @@ package abstraction;
 import node.BettingNode;
 import acpc.Game;
 import acpc.KuhnGame;
+import acpc.State;
 import parameter.AbsParameter;
 import tree.BettingTree;
 
 public class GameAbstraction {
 	
 	public Game game;
+	public State state;
 	public int [] numEntriesPerBucket;
 	public BettingNode root;
 	public final CardAbstraction cardAbs;
 	public final ActionAbstraction actionAbs;
+	
 	
 	public GameAbstraction(AbsParameter params) {
 		
@@ -32,7 +35,8 @@ public class GameAbstraction {
 			System.exit(-1);
 		}
 		/* initialize game state */
-		game.state.initState(game, 0);
+		state = new State();
+		state.initState(game, 0);
 		
 		/* choose action abstraction type */
 		switch (params.actionAbsType) {
@@ -54,7 +58,7 @@ public class GameAbstraction {
 		
 		/* build betting tree */
 		try {
-			root = BettingTree.buildTree(game, actionAbs, numEntriesPerBucket);
+			root = BettingTree.buildTree(game, state, actionAbs, numEntriesPerBucket);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -79,12 +83,13 @@ public class GameAbstraction {
 	
 	public static void main(String[] args) {
 		Game game = new KuhnGame();
-		game.state.initState(game, 0);
+		State state = new State();
+		state.initState(game, 0);
 		ActionAbstraction actionAbs = new NullActionAbstraction();
 		int [] numEntriesPerBucket = new int[game.numRounds];
 		BettingNode root = null;
 		try {
-			root = BettingTree.buildTree(game, actionAbs, numEntriesPerBucket);
+			root = BettingTree.buildTree(game, state, actionAbs, numEntriesPerBucket);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

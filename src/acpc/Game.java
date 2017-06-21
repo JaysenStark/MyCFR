@@ -51,26 +51,26 @@ public class Game implements Cloneable {
 	/* number of shared public cards each round */
 	public int numBoardCards [];
 	
-	public State state;
+//	public State state;
 	
 	
 	
 	public Game() {
-		state = new State();
+//		state = new State();
 //		rand.setSeed(System.currentTimeMillis());
 		rand.setSeed(0);
 	}
 	
 	/* sizes[0] minRaiseSize, size[1] maxRaiseSize */
-	public boolean raiseIsValid(int [] sizes) {
+	public boolean raiseIsValid(State state, int [] sizes) {
 		
-		if ( numRaises() >= maxRaises[state.round] ) {
+		if ( numRaises(state) >= maxRaises[state.round] ) {
 			return false;
 		}
 		if ( state.numActions[state.round] + numPlayers > MAX_NUM_ACTIONS ) {
 			System.out.println("WARINING: Two Many Actions, Forcing Call/Fold!");
 		}
-		if ( numActingPlayers() <= 1 ) {
+		if ( numActingPlayers(state) <= 1 ) {
 			return false;
 		}
 		if ( bettingType != "no-limit" ) {
@@ -81,7 +81,7 @@ public class Game implements Cloneable {
 			return true;
 		}
 		
-		int p = currentPlayer();
+		int p = currentPlayer(state);
 		sizes[0] = state.minNoLimitRaiseTo;
 		sizes[1] = stack[p];
 		
@@ -101,14 +101,14 @@ public class Game implements Cloneable {
 		return true;
 	}
 	
-	public int currentPlayer() {
+	public int currentPlayer(State state) {
 		if ( state.numActions[state.round] != 0 ) {
-			return nextPlayer(state.actingPlayer[state.round][state.numActions[state.round] - 1 ]);
+			return nextPlayer(state, state.actingPlayer[state.round][state.numActions[state.round] - 1 ]);
 		}
-		return nextPlayer( firstPlayer[state.round] + numPlayers - 1 );
+		return nextPlayer(state, firstPlayer[state.round] + numPlayers - 1 );
 	}
 	
-	public int nextPlayer(int curPlayer) {
+	public int nextPlayer(State state, int curPlayer) {
 		int n = curPlayer;
 		do {
 			n = ( n + 1 ) % numPlayers;
@@ -117,7 +117,7 @@ public class Game implements Cloneable {
 	}
 	
 	//ADVANCE
-	public int numRaises() {
+	public int numRaises(State state) {
 		int ret = 0;
 		for ( int i : state.numActions ) {
 			if (state.action[state.round][i] != null ) {
@@ -129,7 +129,7 @@ public class Game implements Cloneable {
 		return ret;
 	}
 	
-	public int numFolded() {
+	public int numFolded(State state) {
 		int ret = 0;
 		for ( int p = 0; p < numPlayers; ++p ) {
 			if ( state.playerFolded[p] ) {
@@ -139,7 +139,7 @@ public class Game implements Cloneable {
 		return ret;
 	}
 	
-	public int numCalled() {
+	public int numCalled(State state) {
 		int ret = 0;
 		int p;
 		for (int i = state.numActions[state.round]; i > 0; --i ) {
@@ -159,7 +159,7 @@ public class Game implements Cloneable {
 		return ret;
 	}
 	
-	public int numAllIn() {
+	public int numAllIn(State state) {
 		int ret = 0;
 		for ( int p = 0; p < numPlayers; ++p ) {
 			if ( state.spent[p] >= stack[p] ) {
@@ -169,7 +169,7 @@ public class Game implements Cloneable {
 		return ret;
 	}
 	
-	public int numActingPlayers() {
+	public int numActingPlayers(State state) {
 		int ret = 0;
 		for ( int p = 0; p < numPlayers; ++p ) {
 			if (!state.playerFolded[p]  && state.spent[p] < stack[p] ) {
@@ -215,14 +215,14 @@ public class Game implements Cloneable {
 		}
 	}
 
-	public boolean isValidAction(Action action, boolean tryFixing) {
+	public boolean isValidAction(State state, Action action, boolean tryFixing) {
 		int [] sizes = new int[2];
-		if ( stateFinished() || action.type == ActionType.a_invalid ) {
+		if ( stateFinished(state) || action.type == ActionType.a_invalid ) {
 			return false;
 		}
-		int p = currentPlayer();
+		int p = currentPlayer(state);
 		if ( action.type == ActionType.a_raise ) {
-			if ( !raiseIsValid(sizes)) {
+			if ( !raiseIsValid(state, sizes)) {
 				/* there are no valid raise sizes */
 				return false;
 			}
@@ -263,12 +263,12 @@ public class Game implements Cloneable {
 		return true;
 	}
 
-	public boolean stateFinished() {
+	public boolean stateFinished(State state) {
 		return state.finished;
 	}
 	
-	public void doAction(Action action) {
-		int p = currentPlayer();
+	public void doAction(State state, Action action) {
+		int p = currentPlayer(state);
 		assert ( state.numActions[state.round] < MAX_NUM_ACTIONS );
 		state.action[state.round][state.numActions[state.round]] = action;
 		state.actingPlayer[state.round][state.numActions[state.round]] = p;
@@ -312,11 +312,11 @@ public class Game implements Cloneable {
 		}// end switch
 		
 		/* see if the round or game has ended */
-		if ( numFolded() + 1 >= numPlayers ) {
+		if ( numFolded(state) + 1 >= numPlayers ) {
 			state.finished = true;
-		} else if ( numCalled() >= numActingPlayers() ) {
+		} else if ( numCalled(state) >= numActingPlayers(state) ) {
 			/* >= 2 non-folded players, all acting players have called */
-			if ( numActingPlayers() > 1 ) {
+			if ( numActingPlayers(state) > 1 ) {
 				/* there are at least 2 acting players */
 				if ( state.round + 1 < numRounds ) {
 					++state.round;
@@ -349,19 +349,19 @@ public class Game implements Cloneable {
 			System.out.println("ERROR: game object clone fails!");
 			e.printStackTrace();
 		}
-		newGame.state = (State) state.clone();
+//		newGame.state = (State) state.clone();
 		return newGame;
 	}
 	
 	public static void main(String[] args) {
-		Game game = new Game();
-		game.state.initState(game, 0);
-		Game newGame = null;
-		
-		newGame = (Game) game.clone();
-		
-		assert (newGame.state != game.state);
-		System.out.println("end");
+//		Game game = new Game();
+//		game.state.initState(game, 0);
+//		Game newGame = null;
+//		
+//		newGame = (Game) game.clone();
+//		
+//		assert (newGame.state != game.state);
+//		System.out.println("end");
 	}
 
 	/* board card start index */

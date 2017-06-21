@@ -11,9 +11,8 @@ import acpc.State;
 
 
 public class BettingTree {
-    public static BettingNode buildTree(Game game, ActionAbstraction actionAbs, int [] numEntriesPerBucket) {
+    public static BettingNode buildTree(Game game, State state, ActionAbstraction actionAbs, int [] numEntriesPerBucket) {
     	BettingNode node = null;
-    	State state = game.state;
     	
     	if ( state.finished ) {
     		/* Terminal node */
@@ -49,7 +48,7 @@ public class BettingTree {
     	
     	/* Choice node.  First, compute number of different allowable actions */
     	Action [] actions = new Action[AbstractionConstants.MAX_ABSTRACT_ACTIONS];
-    	int numChoices = actionAbs.getActions(game, actions);
+    	int numChoices = actionAbs.getActions(game, state, actions);
     	
     	/* Next, grab the index for this node into the regrets and avg_strategy */
     	int solnIdx = numEntriesPerBucket[state.round];
@@ -59,9 +58,9 @@ public class BettingTree {
     	 /* Recurse to create children */
     	BettingNode firstChild = null, lastChild = null;
     	for ( int a = 0; a < numChoices; ++a ) {
-    		Game subGame = (Game) game.clone();
-    		subGame.doAction(actions[a]);
-    		BettingNode child = buildTree(subGame, actionAbs, numEntriesPerBucket);
+    		State subState = (State) state.clone();
+    		game.doAction(subState, actions[a]);
+    		BettingNode child = buildTree(game, subState, actionAbs, numEntriesPerBucket);
     		assert (child != null);
     		if ( lastChild != null ) {
     			lastChild.setSibling(child);
@@ -81,7 +80,7 @@ public class BettingTree {
     	/* Create the InfoSetNode */
     	switch ( game.numPlayers ) {
     	case 2 :
-    		node =  new InfoSet(solnIdx, numChoices, game.currentPlayer(), game.state.round, firstChild);
+    		node =  new InfoSet(solnIdx, numChoices, game.currentPlayer(state), state.round, firstChild);
     		break;
     	case 3 :
     		break;

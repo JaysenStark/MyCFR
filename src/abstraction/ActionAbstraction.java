@@ -2,7 +2,8 @@ package abstraction;
 
 import acpc.Action;
 import acpc.Game;
+import acpc.State;
 
 public abstract class ActionAbstraction implements AbstractionConstants {
-	public abstract int getActions(Game game, Action [] actions);
+	public abstract int getActions(Game game, State state, Action [] actions);
 }

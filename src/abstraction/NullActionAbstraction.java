@@ -3,11 +3,12 @@ package abstraction;
 import acpc.Action;
 import acpc.ActionType;
 import acpc.Game;
+import acpc.State;
 
 public class NullActionAbstraction extends ActionAbstraction implements AbstractionConstants {
 
 	@Override
-	public int getActions(Game game, Action[] actions) {
+	public int getActions(Game game, State state, Action[] actions) {
 		int numActions = 0;
 		boolean error = false;
 		ActionType [] types = ActionType.values();
@@ -18,7 +19,7 @@ public class NullActionAbstraction extends ActionAbstraction implements Abstract
 			}
 			if ( type == ActionType.a_raise ) {
 				int [] sizes = new int[2];
-				if ( game.raiseIsValid(sizes) ) {
+				if ( game.raiseIsValid(state, sizes) ) {
 					if ( numActions + sizes[1] - sizes[0] + 1 > MAX_ABSTRACT_ACTIONS ) {
 						error = true;
 						break;
@@ -28,7 +29,7 @@ public class NullActionAbstraction extends ActionAbstraction implements Abstract
 						++numActions;
 					}
 				}	
-			} else if ( game.isValidAction(action, false) ) {
+			} else if ( game.isValidAction(state, action, false) ) {
 				/* If you hit this assert, there are too many abstract actions allowed.
 				  * Either coarsen the betting abstraction or increase MAX_ABSTRACT_ACTIONS
 				  * in constants.hpp
