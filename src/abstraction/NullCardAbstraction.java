@@ -4,6 +4,7 @@ import node.BettingNode;
 import acpc.Card;
 import acpc.Game;
 import acpc.Hand;
+import acpc.State;
 
 public class NullCardAbstraction extends CardAbstraction {
 
@@ -36,8 +37,8 @@ public class NullCardAbstraction extends CardAbstraction {
 	}
 
 	@Override
-	public int numBuckets(Game game) {
-		return mNumBuckets[game.state.round];
+	public int numBuckets(State state) {
+		return mNumBuckets[state.round];
 	}
 
 	@Override
@@ -80,6 +81,13 @@ public class NullCardAbstraction extends CardAbstraction {
 	@Override
 	public boolean canPrecomputeBuckets() {
 		return true;
+	}
+
+	@Override
+	public int getBucket(Game game, BettingNode node, int[] boardCards, int[][] holeCards) {
+		int [] currentPlayerHoleCards = holeCards[node.getPlayer()];
+		int round = node.getRound();
+		return getBucketInternal(game, boardCards, currentPlayerHoleCards, round);
 	}
 
 }
