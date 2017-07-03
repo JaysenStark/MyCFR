@@ -8,7 +8,7 @@ public class MatchState extends State{
 	public int handId = -1;
 	
 	public void readMatchState(Game game, String message) {
-		//TODO need to initialize state first
+		initState(game, 0);
 		String [] messages = message.split(":");
 		viewingPlayer =  Integer.parseInt(messages[1]);
 		handId =  Integer.parseInt(messages[2]);
@@ -58,6 +58,15 @@ public class MatchState extends State{
 		for ( int i = 0; i < len / 2; i ++ ) {
 			char rankChar = holeCards.charAt(2 * i);
 			char suitChar = holeCards.charAt(2 * i + 1);
+			//TODO
+			suitChar = 'c';
+			if ( rankChar == 'Q' ) {
+				rankChar = '2';
+			} else if ( rankChar == 'K' ) {
+				rankChar = '3';
+			} else if ( rankChar == 'A' ) {
+				rankChar = '4';
+			}
 			int card = Card.makeCard(rankChar, suitChar);
 			this.holeCards[viewingPlayer][i] = card;
 		}
@@ -87,6 +96,10 @@ public class MatchState extends State{
 					temp = "";
 				}
 				raiseFlag = !raiseFlag;
+				// if there is no more character left, this must be a 0-size raise
+				if ( i + 1 == len ) {
+					actions.add( new Action(ActionType.a_raise, 0));
+				}
 				break;
 			default :
 				temp += ch;
