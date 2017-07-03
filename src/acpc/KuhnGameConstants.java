@@ -6,7 +6,7 @@ public interface KuhnGameConstants {
 	public static final int NUM_ROUNDS = 1;
 	public static final int [] BLIND = {1, 1};
 	public static final int [] RAISE_SIZE = {1};
-	public static final int [] FIRST_PLAYER = {1};
+	public static final int [] FIRST_PLAYER = {0};
 	public static final int [] MAX_RAISES = {1};
 	public static final int NUM_SUITS = 1;
 	public static final int NUM_RANKS = 3;
