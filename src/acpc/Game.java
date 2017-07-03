@@ -102,9 +102,12 @@ public class Game implements Cloneable {
 	}
 	
 	public int currentPlayer(State state) {
+		/* if action has already been made, compute next player from last player */
 		if ( state.numActions[state.round] != 0 ) {
 			return nextPlayer(state, state.actingPlayer[state.round][state.numActions[state.round] - 1 ]);
 		}
+		/* first player in a round is determined by the game and round
+	       use nextPlayer() because firstPlayer[round] might be unable to act */
 		return nextPlayer(state, firstPlayer[state.round] + numPlayers - 1 );
 	}
 	
