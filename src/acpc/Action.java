@@ -19,6 +19,9 @@ public class Action {
 			ret = "f";
 			break;
 		case a_raise :
+			if ( size == 0 ) {
+				return "r";
+			}
 			ret = "r" + size;
 			break;
 		default :
