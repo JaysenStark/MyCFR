@@ -102,6 +102,11 @@ public class Game implements Cloneable {
 	}
 	
 	public int currentPlayer(State state) {
+		
+		if ( state.finished ) {
+			return -1;
+		}
+		
 		/* if action has already been made, compute next player from last player */
 		if ( state.numActions[state.round] != 0 ) {
 			return nextPlayer(state, state.actingPlayer[state.round][state.numActions[state.round] - 1 ]);
@@ -184,7 +189,7 @@ public class Game implements Cloneable {
 	
 	public int dealCard(final Random random, int [] deck, int numCards) {
 		int ret = -1;
-		int i = random.nextInt(numCards) % numCards;
+		int i = random.nextInt(65535) % numCards;
 		ret = deck[i];
 		deck[i] = deck[numCards - 1];
 		return ret;
