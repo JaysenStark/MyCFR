@@ -188,9 +188,8 @@ public class Game implements Cloneable {
 	}
 	
 	public int dealCard(final Random random, int [] deck, int numCards) {
-		int ret = -1;
-		int i = random.nextInt(65535) % numCards;
-		ret = deck[i];
+		int i = random.nextInt(numCards);
+		int ret = deck[i];
 		deck[i] = deck[numCards - 1];
 		return ret;
 	}
