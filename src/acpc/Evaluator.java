@@ -9,8 +9,7 @@ public class Evaluator {
 		return 0;
 	}
 	
-	public static int evaluate(Hand hand, int [] ranks) {
-		// TODO
+	public static void evaluate(Hand hand, int [] ranks) {
 		int numPlayers = hand.holeCards.length;
 		
 		for ( int p = 0; p < numPlayers; ++p ) {
@@ -25,8 +24,6 @@ public class Evaluator {
 			}
 			ranks[p] = cardSet.rankCardSet();
 		}
-		
-		return 0;
 	}
 	
 	
