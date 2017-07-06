@@ -133,7 +133,7 @@ public class PureCFRMachine {
 		}
 		
 		/* Purify the current strategy so that we always take choice */
-		int dart = random.nextInt(65535) % sumPositiveRegrets;
+		double dart = random.nextDouble() * sumPositiveRegrets;
 		int choice;
 		for ( choice = 0 ; choice < numChoices; ++ choice) {
 			if ( dart < positiveRegrets[choice] ) {
