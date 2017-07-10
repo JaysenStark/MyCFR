@@ -2,15 +2,18 @@ package acpc;
 
 public class Card {
 	
+	public static final String rankChars = "23456789TJQKA";
+	public static final String suitChars = "cdhs";
+	
 	public static final int MAX_SUITS = 4;
 	public static final int MAX_RANKS = 13;
 	
 	public static int rankOfCard(int card) {
-		return card % MAX_SUITS;
+		return card / MAX_SUITS;
 	}
 	
 	public static int suitOfCard(int card) {
-		return card / MAX_SUITS;
+		return card % MAX_SUITS;
 	}
 	
 	public static int makeCard(int rank, int suit) {
@@ -59,4 +62,9 @@ public class Card {
 		return rank * MAX_SUITS + suit;
 	}
 
+	public static String cardToString(int card) {
+		int rankOfCard = rankOfCard(card);
+		int suitOfCard = suitOfCard(card);
+		return rankChars.substring(rankOfCard, rankOfCard);
+	}
 }

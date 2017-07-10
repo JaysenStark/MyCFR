@@ -1,6 +1,9 @@
 package acpc;
 
+import java.io.File;
 import java.util.ArrayList;
+
+import agent.PlayerModule;
 
 public class MatchState extends State{
 	
@@ -79,21 +82,31 @@ public class MatchState extends State{
 		ArrayList<Action> actions = new ArrayList<Action>();
 		int len = bettingHistory.length();
 		boolean raiseFlag = false;
-		String temp = "";
+		String temp = "0";
 		
 		for ( int i = 0; i < len; ++i ) {
 			char ch = bettingHistory.charAt(i);
 			switch ( ch ) {
 			case 'c' :
+				if( raiseFlag ) {
+					actions.add(new Action(ActionType.a_raise, Integer.parseInt(temp)));
+					temp = "0";
+					raiseFlag = !raiseFlag;
+				}
 				actions.add(new Action(ActionType.a_call, 0));
 				break;
 			case 'f' :
+				if( raiseFlag ) {
+					actions.add(new Action(ActionType.a_raise, Integer.parseInt(temp)));
+					temp = "0";
+					raiseFlag = !raiseFlag;
+				}
 				actions.add(new Action(ActionType.a_fold, 0));
 				break;
 			case 'r':
 				if (raiseFlag) {
 					actions.add(new Action(ActionType.a_raise, Integer.parseInt(temp)));
-					temp = "";
+					temp = "0";
 				}
 				raiseFlag = !raiseFlag;
 				// if there is no more character left, this must be a 0-size raise
@@ -111,10 +124,6 @@ public class MatchState extends State{
 	
 	public static void main(String[] args) {
 		
-		MatchState m = new MatchState();
-		Game game = new KuhnGame();
-		m.initState(game, 0);
-		m.readMatchState(game, "MATCHSTATE:0:9:c:As|");
 	}
 	
 }

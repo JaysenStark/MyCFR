@@ -46,19 +46,15 @@ public class PureCFRMachine {
 	
 	public void doIteration(final Random random) {
 		Hand hand = new Hand(gameAbs.game);
-		if ( generateHand(hand, random) == false) {
-			System.out.println("ERROR: Unable to generate hand!");
-			System.exit(-1);
-		} else {
-			for ( int p = 0; p < gameAbs.game.numPlayers; ++p ) {
-				walkPureCFR(p, gameAbs.root, hand, random);
-			}
+		generateHand(hand, random);
+		for ( int p = 0; p < gameAbs.game.numPlayers; ++p ) {
+			walkPureCFR(p, gameAbs.root, hand, random);
 		}
+		
 	}
 	
 	//ADV deal cards directly into hand
-	//ADV boolean -> void
-	public boolean generateHand(Hand hand, final Random random) {
+	public void generateHand(Hand hand, final Random random) {
 		State state = new State();
 		state.initState(gameAbs.game, 0);
 		gameAbs.game.dealCards(random, state);
@@ -102,7 +98,6 @@ public class PureCFRMachine {
 			System.out.println("ERROR: player number must be wrong!");
 			System.exit(-1);
 		}
-		return true;
 	}
 	
 	public int walkPureCFR(final int position, final BettingNode curNode, final Hand hand, final Random random) {
@@ -138,7 +133,7 @@ public class PureCFRMachine {
 		}
 		
 		/* Purify the current strategy so that we always take choice */
-		int dart = random.nextInt(65535) % sumPositiveRegrets;
+		double dart = random.nextDouble() * sumPositiveRegrets;
 		int choice;
 		for ( choice = 0 ; choice < numChoices; ++ choice) {
 			if ( dart < positiveRegrets[choice] ) {
