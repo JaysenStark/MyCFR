@@ -82,6 +82,10 @@ public class PureCFRMachine implements Runnable{
 		int [] ranks = new int[gameAbs.game.numPlayers];
 		Evaluator.evaluate(hand, ranks);
 		
+		if(gameAbs.cardAbs.canPrecomputeBuckets()) {
+			gameAbs.cardAbs.precomputeBuckets(gameAbs.game, hand);
+		}
+		
 		/* set evaluation values */
 		switch( gameAbs.game.numPlayers ) {
 		case 2 :
