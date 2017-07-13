@@ -2,6 +2,9 @@ package solver;
 
 import java.io.File;
 import java.util.Random;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import parameter.AbsParameter;
 import parameter.SolverParameter;
@@ -13,12 +16,14 @@ public class PureCFR {
 	
 	public static void main(String[] args) {
 		System.out.println("start");
-		Random random = new Random();
-		random.setSeed(0);
-		AbsParameter params = new AbsParameter();
+		
+		AbsParameter absParams = new AbsParameter();
 		SolverParameter solverParams = new SolverParameter(BLOCK_SIZE, 4, NUMBER);
-		PureCFRMachine pcm = new PureCFRMachine(params, solverParams);
+		PureCFRMachine pcm = new PureCFRMachine(absParams, solverParams);
 		runPureCFR(pcm);
+		System.out.println("---------------");
+		multiRunPureCFR(pcm, solverParams);
+		
 		System.out.println("end");
 	}
 	
@@ -44,6 +49,32 @@ public class PureCFR {
 		long endTime = System.currentTimeMillis();
 		
 		System.out.println(NUMBER * BLOCK_SIZE + " iterations used " + (endTime - startTime) / 1000.0 + " seconds");
+	}
+	
+	public static void multiRunPureCFR(PureCFRMachine pcm, SolverParameter solverParams) {
+		int parallelNumber = solverParams.getParallelNumber();
+		int threadNumber = solverParams.getThreadNumber();
+		int blockSize = solverParams.getBlockSize();
+		
+		CountDownLatch cdLatch = new CountDownLatch(threadNumber);
+		pcm.setCdLatch(cdLatch);
+		ExecutorService fixedThreadPool = Executors.newFixedThreadPool(parallelNumber);
+		
+		long startTime = System.currentTimeMillis();
+		for (int th = 0; th < threadNumber; ++th) {
+			fixedThreadPool.execute(pcm);
+		}
+		
+		try {
+			cdLatch.await();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		fixedThreadPool.shutdown();
+		long endTime = System.currentTimeMillis();
+		
+		System.out.println(threadNumber * blockSize + " iterations used " + (endTime - startTime) / 1000.0 + " seconds");
 	}
 	
 

@@ -21,7 +21,7 @@ import acpc.Evaluator;
 import acpc.Hand;
 import acpc.State;
 
-public class PureCFRMachine {
+public class PureCFRMachine implements Runnable{
 	
 	public GameAbstraction gameAbs;
 	public boolean doAverage;
@@ -64,7 +64,8 @@ public class PureCFRMachine {
 
 	public void doIteration() {
 		Hand hand = new Hand(gameAbs.game);
-		generateHand(hand, random);
+		gameAbs.game.generateHand(random, hand);
+		rankHand(hand);
 		for ( int p = 0; p < gameAbs.game.numPlayers; ++p ) {
 			walkPureCFR(p, gameAbs.root, hand, random);
 		}
@@ -74,6 +75,33 @@ public class PureCFRMachine {
 	public void doIterations() {
 		for (int i = 0; i < blockSize; ++i) {
 			doIteration();
+		}
+	}
+	
+	public void rankHand(Hand hand) {
+		int [] ranks = new int[gameAbs.game.numPlayers];
+		Evaluator.evaluate(hand, ranks);
+		
+		/* set evaluation values */
+		switch( gameAbs.game.numPlayers ) {
+		case 2 :
+			if ( ranks[0] > ranks[1] ) {
+				hand.showdownValue[0] = 1;
+				hand.showdownValue[1] = -1;
+			} else if ( ranks[0] < ranks[1] ) {
+				hand.showdownValue[0] = -1;
+				hand.showdownValue[1] = 1;
+			} else {
+				hand.showdownValue[0] = 0;
+				hand.showdownValue[1] = 0;
+			}
+			break;
+		case 3 :
+			System.out.println("ERROR: not implemented for 3 player evaluation yet!");
+			System.exit(-1);
+		default:
+			System.out.println("ERROR: player number must be wrong!");
+			System.exit(-1);
 		}
 	}
 	
@@ -279,5 +307,22 @@ public class PureCFRMachine {
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public void run() {
+		doIterations();
+		synchronized (this) {
+			// update count
+			counter += 1;
+
+			// dump regrets and average strategy
+			File regretFile = new File("thread-" + counter + ".regret");
+			File strategyFile = new File("thread-" + counter + ".avgStrategy");
+			dumpRegret(regretFile);
+			dumpRegret(strategyFile);
+			cdLatch.countDown();
+		}
+	}
+
 	
 }
