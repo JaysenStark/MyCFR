@@ -59,13 +59,12 @@ public class EntriesLoader extends Entries {
 	public int getPositiveValues(final int bucket, final int solnIdx, final int numChoices, int [] positiveValues) {
 		/* Get the local entries at this index */
 		int baseIndex = getEntriesIndex(bucket, solnIdx);
-		int [] localEntries = new int[numChoices];
+		
 		int sumValues = 0;
 		/* Zero out negative values and store in the returned array */
 		for ( int c = 0; c < numChoices; ++c ) {
-			localEntries[c] = (entries[baseIndex + c] > 0)? entries[baseIndex + c] : 0;
-			positiveValues[c] = localEntries[c];
-			sumValues += localEntries[c];
+			positiveValues[c] = (entries[baseIndex + c] > 0)? entries[baseIndex + c] : 0;
+			sumValues += positiveValues[c];
 		}
 		return sumValues;
 	}
