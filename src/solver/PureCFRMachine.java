@@ -8,10 +8,14 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Random;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ThreadLocalRandom;
+
 import node.BettingNode;
 import node.Entries;
 import node.EntriesLoader;
 import parameter.AbsParameter;
+import parameter.SolverParameter;
 import abstraction.GameAbstraction;
 import acpc.Evaluator;
 import acpc.Hand;
@@ -24,8 +28,13 @@ public class PureCFRMachine {
 	public Entries [] regrets;
 	public Entries [] avgStrategy;
 	
-	public PureCFRMachine(final AbsParameter params) {
-		// TODO
+	private Random random;
+	private final int blockSize;
+	private int counter;
+	private int threadNumber;
+	private CountDownLatch cdLatch;
+	
+	public PureCFRMachine(final AbsParameter params, final SolverParameter solverParams) {
 		this.doAverage = params.doAverage;
 		gameAbs = new GameAbstraction(params);
 		regrets = new Entries[gameAbs.game.numRounds];
@@ -42,15 +51,30 @@ public class PureCFRMachine {
 				// average strategy
 				avgStrategy[r] = new EntriesLoader(numEntriesPerBucket[r], totalNumEntries[r]);
 		}
+		random = ThreadLocalRandom.current();
+		blockSize = solverParams.getBlockSize();
+		threadNumber = solverParams.getThreadNumber();
+		counter = 0;
 	}
 	
-	public void doIteration(final Random random) {
+	public void setCdLatch(CountDownLatch cdLatch) {
+		this.cdLatch = cdLatch;
+	}
+
+
+	public void doIteration() {
 		Hand hand = new Hand(gameAbs.game);
 		generateHand(hand, random);
 		for ( int p = 0; p < gameAbs.game.numPlayers; ++p ) {
 			walkPureCFR(p, gameAbs.root, hand, random);
 		}
-		
+	}
+	
+	// do iteration with block size number
+	public void doIterations() {
+		for (int i = 0; i < blockSize; ++i) {
+			doIteration();
+		}
 	}
 	
 	//ADV deal cards directly into hand
