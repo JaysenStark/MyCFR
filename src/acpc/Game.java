@@ -221,6 +221,35 @@ public class Game implements Cloneable {
 			}
 		}
 	}
+	
+	// this function is similar to dealCards, the only difference is to deal cards into hand
+	public void generateHand(final Random random, Hand hand) {
+		int numCards = 0;
+		int [] deck = new int[numRanks * numSuits];
+		/* create deck first */
+		for ( int s = 0; s < numSuits; ++s ) {
+			for ( int r = 0; r < numRanks; ++r ) {
+				deck[numCards] = Card.makeCard(r, s);
+				++numCards;
+			}
+		}
+		/* deal hole cards for each player */
+		for ( int p = 0; p < numPlayers; ++p ) {
+			for ( int i = 0; i < numHoleCards; ++i ) {
+				hand.holeCards[p][i] = dealCard(random, deck, numCards);
+				--numCards;
+			}
+		}
+		/* deal public cards */
+		int s = 0;
+		for ( int r = 0; r < numRounds; ++r ) {
+			for ( int i = 0; i < numBoardCards[r]; ++i ) {
+				hand.boardCards[s] = dealCard(random, deck, numCards);
+				--numCards;
+				++s;
+			}
+		}
+	}
 
 	public boolean isValidAction(State state, Action action, boolean tryFixing) {
 		int [] sizes = new int[2];
